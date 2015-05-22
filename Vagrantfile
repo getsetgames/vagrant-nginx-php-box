@@ -80,6 +80,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "shell" do |shell|
     shell.path = "bootstrap/01_puppet_modules.sh"
   end
+  config.vm.provision "shell" do |shell|
+    shell.path = "bootstrap/02_gen_ssl.sh"
+  end
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
   # are contained in a directory path relative to this Vagrantfile.
