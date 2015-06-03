@@ -77,6 +77,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   cf.policy_server_address = "10.0.2.15"
   # end
 
+  # [BV] Local host scripts
+  system("
+    if [ #{ARGV[0]} = 'up' ]; then
+        ruby inspect_network.rb
+    fi
+  ")
+
   # [BV] Provisioning scripts
   config.vm.provision "shell" do |shell|
     shell.path = "bootstrap/00_puppet.sh"
