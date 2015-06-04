@@ -1,0 +1,50 @@
+# file managed by puppet
+#
+# SSLeay example configuration file.
+#
+
+# This definition stops the following lines choking if HOME isn't
+# defined.
+HOME                    = .
+RANDFILE                = $ENV::HOME/.rnd
+
+[ req ]
+default_bits            = 2048
+default_md              = sha256
+default_keyfile         = privkey.pem
+distinguished_name      = req_distinguished_name
+prompt                  = no
+<% if @altnames and not @altnames.empty? -%>
+x509_extensions             = v3_req
+req_extensions              = v3_req
+<% end -%>
+
+[ req_distinguished_name ]
+countryName                     = <%= @country %>
+<% unless @state.nil? -%>
+stateOrProvinceName             = <%= @state %>
+<% end -%>
+<% unless @locality.nil? -%>
+localityName                    = <%= @locality %>
+<% end -%>
+organizationName                = <%= @organization %>
+<% unless @unit.nil? -%>
+organizationalUnitName          = <%= @unit %>
+<% end -%>
+commonName                      = <%= @commonname %>
+<% unless @email.nil? -%>
+emailAddress                    = <%= @email %>
+<% end -%>
+
+<% unless @altnames.empty? -%>
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = <%= @altnames[0] %>
+DNS.2 = localhost
+IP.1 = 127.0.0.1
+IP.2 = <%= @commonname %>
+<% end %>

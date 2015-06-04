@@ -80,7 +80,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # [BV] Local host scripts
   system("
     if [ #{ARGV[0]} = 'up' ]; then
-        ruby inspect_network.rb
+        ruby generate_network_data.rb
     fi
   ")
 
@@ -90,9 +90,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
   config.vm.provision "shell" do |shell|
     shell.path = "bootstrap/01_puppet_modules.sh"
-  end
-  config.vm.provision "shell" do |shell|
-    shell.path = "bootstrap/02_gen_ssl.sh"
   end
   config.vm.provision "puppet" do |puppet|
     puppet.manifests_path = "manifests"

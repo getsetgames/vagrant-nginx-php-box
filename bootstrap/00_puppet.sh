@@ -40,4 +40,5 @@ gem install --no-ri --no-rdoc rubygems-update
 update_rubygems >/dev/null
 
 # Configure hiera
-cp /vagrant/templates/hiera.yaml.erb /etc/hiera.yaml
+echo "Configuring hiera..."
+cp /vagrant/templates/hiera.yaml.erb /etc/puppet/hiera.yaml
