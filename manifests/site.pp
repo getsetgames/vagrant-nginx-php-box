@@ -12,6 +12,10 @@ $vhost_hostname = 'test.getsetgames.com'
 $www_root       = "/vagrant/www/${www_hostname}/"
 $backend_port   = 9000
 
+file { "${www_root}/${vhost_hostname}/inc-app.php":
+  ensure  => present,
+  content => template('/vagrant/templates/inc-app.php.erb')
+}
 openssl::certificate::x509 { $ssl_primary_hostname:
   ensure       => present,
   cnf_tpl      => '/vagrant/templates/cert.cnf.erb',
