@@ -8,6 +8,10 @@ $ssl_root = '/vagrant'
 $ssl_primary_hostname = $netdata[primary_name]
 $ssl_primary_ip       = $netdata[primary_ip]
 
+$vhost_hostname = 'test.getsetgames.com'
+$www_root       = "/vagrant/www/${www_hostname}/"
+$backend_port   = 9000
+
 openssl::certificate::x509 { $ssl_primary_hostname:
   ensure       => present,
   cnf_tpl      => '/vagrant/templates/cert.cnf.erb',
@@ -24,11 +28,14 @@ openssl::certificate::x509 { $ssl_primary_hostname:
   require      => Package['openssl'],
 }
 
-class { 'nginx': }
+file { "${www_root}/${vhost_hostname}/server.crt":
+  ensure  => present,
+  source  => "${ssl_root}/${ssl_primary_hostname}.crt",
 
-$vhost_hostname = 'test.getsetgames.com'
-$www_root = "/vagrant/www/${www_hostname}/"
-$backend_port = 9000
+  require => Openssl::Certificate::X509[$ssl_primary_hostname]
+}
+
+class { 'nginx': }
 
 include ::php
 
