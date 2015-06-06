@@ -38,7 +38,7 @@ emailAddress                    = <%= @email %>
 
 <% unless @altnames.empty? -%>
 [ v3_req ]
-basicConstraints = CA:FALSE
+basicConstraints = CA:TRUE
 keyUsage = nonRepudiation, digitalSignature, keyEncipherment
 subjectAltName = @alt_names
 
