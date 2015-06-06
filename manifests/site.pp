@@ -16,6 +16,12 @@ file { "${www_root}/${vhost_hostname}/inc-app.php":
   ensure  => present,
   content => template('/vagrant/templates/inc-app.php.erb')
 }
+
+file { "${www_root}/${vhost_hostname}/index.html":
+  ensure  => present,
+  content => template('/vagrant/templates/index.html.erb')
+}
+
 openssl::certificate::x509 { $ssl_primary_hostname:
   ensure       => present,
   cnf_tpl      => '/vagrant/templates/cert.cnf.erb',
