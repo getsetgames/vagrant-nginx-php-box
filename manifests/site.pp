@@ -80,3 +80,12 @@ nginx::resource::location { "${vhost_hostname}_root":
      fastcgi_send_timeout    => '3m'
    }
  }
+
+ nginx::resource::location { "downloads_root":
+   ensure          => present,
+   ssl             => true,
+   vhost           => "${vhost_hostname}",
+   www_root        => "/downloads",
+   location        => '~ \.ipa$',
+   index_files     => ['index.html']
+ }
