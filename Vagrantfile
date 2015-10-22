@@ -26,6 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # [BV] Enable HTTP and HTTPS ports
   config.vm.network :forwarded_port, guest: 80, host: 9090
   config.vm.network :forwarded_port, guest: 443, host: 8443
+  config.vm.hostname = "test.getsetgames.com"
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
