@@ -1,27 +1,24 @@
 <?php
-function getRowForFile($file,$title,$bundle_id) {
+function getRowForFile($file,$title,$bundle_id,$server_path) {
 	$maxmb = 10000;
 
     date_default_timezone_set('America/Toronto');
 
-	$fsizebytes = filesize($file);
+	$fsizebytes = filesize($server_path . "/" . $file);
 	$fsize      = round($fsizebytes / 1048576, 1);
 	$ip         = $_SERVER["HTTP_HOST"];
 	$vhost_name = "";
 
-	if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== off)
-	{
+	if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== off) {
 		$protocol = "https";
 	}
-	else
-	{
+	else {
 		$protcol = "http";
 	}
 
 	$ipa_url      = $protocol . "://" . $ip . "/" . $vhost_name . "/". $file;
 	$manifest_url = urlencode($protocol . "://" . $ip . "/" . $vhost_name . "/manifest.php?title=" . $title . "&bundle_id=" . $bundle_id . "&ipa=" . $ipa_url);
-
-	$url = "itms-services://?action=download-manifest&url=" . $manifest_url;
+	$url          = "itms-services://?action=download-manifest&url=" . $manifest_url;
 
 	if ($fsize >= $maxmb) {
 		$fsizecolor = "red";
