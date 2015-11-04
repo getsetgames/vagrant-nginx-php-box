@@ -5,17 +5,21 @@ function getRowForFile($file,$title,$bundle_id) {
     date_default_timezone_set('America/Toronto');
 
 	$fsizebytes = filesize($file);
+	$fsize      = round($fsizebytes / 1048576, 1);
+	$ip         = $_SERVER["HTTP_HOST"];
+	$vhost_name = "";
 
-	$fsize = round($fsizebytes / 1048576, 1);
+	if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== off)
+	{
+		$protocol = "https";
+	}
+	else
+	{
+		$protcol = "http";
+	}
 
-
-	// [RS] don't hardcode port
-	//
-	$ip  = "192.168.2.205:8443";
-	$vhost_name = "test.getsetgames.com";
-
-	$ipa_url = "https://" . $ip . "/" . $vhost_name . "/". $file;
-	$manifest_url = urlencode("https://" . $ip . "/" . $vhost_name . "/manifest.php?title=" . $title . "&bundle_id=" . $bundle_id . "&ipa=" . $ipa_url);
+	$ipa_url      = $protocol . "://" . $ip . "/" . $vhost_name . "/". $file;
+	$manifest_url = urlencode($protocol . "://" . $ip . "/" . $vhost_name . "/manifest.php?title=" . $title . "&bundle_id=" . $bundle_id . "&ipa=" . $ipa_url);
 
 	$url = "itms-services://?action=download-manifest&url=" . $manifest_url;
 
