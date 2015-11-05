@@ -1,13 +1,32 @@
 <?php
+
+function getDirectoryListing($dir)
+{
+	$i = 0;
+
+	if ($handle = opendir($dir)) 
+	{
+	    while (false !== ($entry = readdir($handle))) {
+	    	$files[$i] = $entry;
+	    	$i++;
+	    }
+
+	    closedir($handle);
+	}
+
+	return $files;
+}
+
 function getRowForFile($file,$title,$bundle_id,$server_path) {
 	$maxmb = 10000;
 
     date_default_timezone_set('America/Toronto');
 
-	$fsizebytes = filesize($server_path . "/" . $file);
-	$fsize      = round($fsizebytes / 1048576, 1);
-	$ip         = $_SERVER["HTTP_HOST"];
-	$vhost_name = "";
+    $file_full_path = $server_path . "/" . $file;
+	$fsizebytes     = filesize($file_full_path);
+	$fsize          = round($fsizebytes / 1048576, 1);
+	$ip             = $_SERVER["HTTP_HOST"];
+	$vhost_name     = "";
 
 	if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== off) {
 		$protocol = "https";
@@ -27,7 +46,7 @@ function getRowForFile($file,$title,$bundle_id,$server_path) {
 		$fsizecolor = "black";
 	}
 
-	$res = "<tr><td><a href='" . $url . "'>" . str_replace(".ipa","",$file) . "</a></td><td>" . date('Y-m-d, H:i', filemtime($file)) . "</td><td><font color='" . $fsizecolor . "'>" . $fsize . "</font></td></tr>";
+	$res = "<tr><td><a href='" . $url . "'>" . str_replace(".ipa","",$file) . "</a></td><td>" . date('Y-m-d, H:i', filemtime($file_full_path)) . "</td><td><font color='" . $fsizecolor . "'>" . $fsize . "</font></td></tr>";
 
 	return $res;
 }
